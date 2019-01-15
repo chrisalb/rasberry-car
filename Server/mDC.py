@@ -67,10 +67,9 @@ class mDEV:
 			time.sleep(0.001)
 			self.bus.write_i2c_block_data(self.address,cmd,[value>>8,value&0xff])
 			time.sleep(0.001)
-		except Exception:
-			print (Exception)
+		except Exception,e:
+			print Exception,"I2C Error :",
 		
-
 	def readReg(self,cmd):		
 		##################################################################################################
 		#Due to the update of SMBus, the communication between Pi and the shield board is not normal. 
@@ -134,18 +133,18 @@ def loop():
 	while True:
 		SonicEchoTime = mdev.readReg(mdev.CMD_SONIC)
 		distance = SonicEchoTime * 17.0 / 1000.0
-		print ("EchoTime: %d, Sonic: %.2f cm"%(SonicEchoTime,distance))
+		print "EchoTime: %d, Sonic: %.2f cm"%(SonicEchoTime,distance)
 		time.sleep(0.001)
 	
 if __name__ == '__main__':
 	import sys
-	print ("mDev.py is starting ... ")
+	print "mDev.py is starting ... "
 	#setup()
 	try:
 		if len(sys.argv)<2:
-			print ("Parameter error: Please assign the device")
+			print "Parameter error: Please assign the device"
 			exit() 
-		print (sys.argv[0],sys.argv[1])
+		print sys.argv[0],sys.argv[1]
 		if sys.argv[1] == "servo":		
 			cnt = 3	
 			while (cnt != 0):		
@@ -180,7 +179,7 @@ if __name__ == '__main__':
 			mdev.writeReg(mdev.CMD_IO3,1)
 		if sys.argv[1] == "ultrasonic" or sys.argv[1] == "s":
 			while True:
-				print ("Sonic: ",mdev.getSonic())
+				print "Sonic: ",mdev.getSonic()
 				time.sleep(0.1)
 		if sys.argv[1] == "motor":
 				mdev.writeReg(mdev.CMD_DIR1,0)
@@ -205,5 +204,61 @@ if __name__ == '__main__':
 					mdev.writeReg(mdev.CMD_PWM1,i)
 					mdev.writeReg(mdev.CMD_PWM2,i)
 					time.sleep(0.005)
+
+		if sys.argv[1] == "motor2":
+   			try:			
+				mdev.writeReg(mdev.CMD_DIR1,0)
+				mdev.writeReg(mdev.CMD_DIR2,0)	
+
+				for i in range(0,3):
+					mdev.writeReg(mdev.CMD_IO1,0)
+					mdev.writeReg(mdev.CMD_IO2,1)
+					mdev.writeReg(mdev.CMD_IO3,1)
+					
+					mdev.writeReg(mdev.CMD_IO1,1)
+					mdev.writeReg(mdev.CMD_IO2,0)
+					mdev.writeReg(mdev.CMD_IO3,1)
+					
+					mdev.writeReg(mdev.CMD_IO1,1)
+					mdev.writeReg(mdev.CMD_IO2,1)
+					mdev.writeReg(mdev.CMD_IO3,0)
+				
+
+				while True:
+					for i in range(0,400,10):	
+						mdev.writeReg(mdev.CMD_PWM1,i)
+						mdev.writeReg(mdev.CMD_PWM2,i)
+					time.sleep(2)
+
+					mdev.writeReg(mdev.CMD_SERVO1,300)
+
+					mdev.writeReg(mdev.CMD_DIR1,1)
+					mdev.writeReg(mdev.CMD_DIR2,1)	
+
+					for i in range(0,400,10):	
+						mdev.writeReg(mdev.CMD_PWM1,i)
+						mdev.writeReg(mdev.CMD_PWM2,i)
+						
+					time.sleep(2)
+						
+					mdev.writeReg(mdev.CMD_SERVO1,1500)
+					mdev.writeReg(mdev.CMD_PWM1,0)
+					mdev.writeReg(mdev.CMD_PWM2,0)
+
+					mdev.writeReg(mdev.CMD_DIR1,0)
+					mdev.writeReg(mdev.CMD_DIR2,0)	
+			except KeyboardInterrupt:
+				mdev.writeReg(mdev.CMD_IO1,1)
+				mdev.writeReg(mdev.CMD_IO2,1)
+				mdev.writeReg(mdev.CMD_IO3,1)
+				mdev.writeReg(mdev.CMD_SERVO1,1500)
+				mdev.writeReg(mdev.CMD_PWM1,0)
+				mdev.writeReg(mdev.CMD_PWM2, 0)				
+			pass	
+
 	except KeyboardInterrupt:
 		pass	
+
+
+
+

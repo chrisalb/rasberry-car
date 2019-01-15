@@ -21,7 +21,7 @@ from socket import *
 
 class TCPClient:
     #HOST = '127.0.0.1'
-    HOST = '192.168.1.108'
+    HOST = '192.168.1.07'
     PORT = 12345
     BUFSIZ = 1024
     ADDR = (HOST, PORT)
