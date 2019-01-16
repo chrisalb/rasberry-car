@@ -54,9 +54,19 @@
           handleSize: 0,
           handleShape: "square",
           circleShape: "half-top",
-          startAngle: 90,
+          startAngle: 50,
           endAngle: "+225",
-          value: 45
+          value: 50,
+          create: function (v) {
+            console.log('Create');
+          },
+          drag: function (v) {
+            console.log(v.value);
+          },
+          stop: function (v) {
+            console.log('Stop: ');
+            console.log(v);
+          }
         });
       })
 
