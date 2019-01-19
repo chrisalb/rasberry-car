@@ -55,13 +55,13 @@
           handleShape: "square",
           circleShape: "half-top",
           startAngle: 50,
-          endAngle: "+225",
+          endAngle: "+50",
           value: 50,
           create: function (v) {
             console.log('Create');
           },
           drag: function (v) {
-            console.log(v.value);
+            // console.log(v.value);
           },
           stop: function (v) {
             console.log('Stop: ');

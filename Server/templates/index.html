@@ -3,22 +3,34 @@
 <head>
 
     <title>Kretskortbil</title>
-
+    <script src="{{url_for('static', filename='jquery-3.3.1.min.js')}}"></script>
+    <script src="{{url_for('static', filename='roundslider.min.js')}}"></script>
     <script src="{{url_for('static', filename='app.js')}}"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='app.css')}}/">
+    <link rel="stylesheet" href="{{url_for('static', filename='roundslider.min.css')}}">
 </head>
 
 <body>
-<div>
-    <button id="rightforward">Framåt höger</button>
-    <button id="leftforward">Framåt vänster</button>
-    <button id="forward">Framåt</button>
-    <button id="backward">Bakåt</button>
-    <button id="right">Höger</button>
-    <button id="left">Vänster</button>
-    <button id="stop">Stopp</button>
+    <div>
 
-</div>
+
+        <button id="rightforward">Framåt höger</button>
+        <button id="leftforward">Framåt vänster</button>
+        <button id="forward">Framåt</button>
+        <button id="backward">Bakåt</button>
+        <button id="right">Höger</button>
+        <button id="left">Vänster</button>
+        <button id="stop">Stopp</button>
+
+<p>
+        <input id="camera_left_right" value="1500">
+        <input id="camera_up_down" value="1500">
+
+</p>
+    </div>
+
+    <div class="circle-slider"></div>
+
 </body>
 
 </html>
