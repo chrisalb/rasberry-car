@@ -1,12 +1,25 @@
-body {
-    
+.ui-content{
+    display: flex;
+    justify-content: center;
+}
+
+.iphone {
+    width: 100px;
+    height: 100px;
+    background: lightblue;
+}
+.button-control {
+    display: flex;
+    justify-content: center;
+    flex-flow: row;
+    flex-wrap: wrap;
 }
 
 .circle-slider .rs-handle {
-    background-color: transparent;
-    border: 8px solid transparent;
+    background-color: black;
+    border: 40px solid transparent;
     border-right-color: black;
-    margin: -8px 0 0 14px !important;
+    margin: -40px 0 0 -32px !important;
 }
 
 .circle-slider .rs-handle:before {
@@ -24,7 +37,7 @@ body {
 .circle-slider .rs-handle:after {
     display: block;
     content: " ";
-    width: 106px;
+    width: 400px;
     position: absolute;
     top: -1px;
     right: 0px;

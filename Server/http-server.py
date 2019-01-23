@@ -1,12 +1,16 @@
+
 from flask import Flask
 from flask import render_template
 from flask import request
 from .carControl import *
 from .Camera_Server import *
-# cd ~/raspberry-car
-# export FLASK_APP=http-server.py
-# flask run --host=0.0.0.0 --port=8080
+
+"""
+cd ~/raspberry-car; export FLASK_APP=http-server.py; flask run --host=0.0.0.0 --port=8080;
+
+"""
 PORT_NUMBER = 8080
+TEMPLATES_AUTO_RELOAD = True
 
 app = Flask(__name__)
 
@@ -25,6 +29,7 @@ def command():
         'turning_angle': request.args.get('turning_angle')
         }
     
+    
     if (command == 'camera'):
         camera_data = {
         'camera_up_down': request.args.get('camera_up_down'),
@@ -34,31 +39,39 @@ def command():
         resp = camera(**camera_data)
         return resp
 
-
     if (command == 'run'):
         resp = runner(**data)
         return resp
 
-
     if (command == 'stop'):
         stop()
+        return ''
+
+    if (command == 'buzz'):
+        buzz()
+        return ''
+
+    if (command == 'blink'):
+        blink()
+        return ''
 
     if (command == 'rightforward'):
         rightforward()
+        return ''
 
     if (command == 'leftforward'):
         leftforward()
+        return ''
 
     if (command == 'forward'):
-        forward()
+        resp = forward()
+        return resp
 
     if (command == 'backward'):
-        backward()
-
-    if (command == 'left'):
-        blink()
+        resp = backward()
+        return ''
 
     return ''
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False )

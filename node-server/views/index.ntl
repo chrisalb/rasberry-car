@@ -3,56 +3,20 @@
     <script src="/assets/jquery-3.3.1.min.js"></script>
     <script src="/assets/roundslider.min.js"></script>
     <link rel="stylesheet" href="/assets/roundslider.min.css">
+    <link rel="stylesheet" href="/assets/app.css">
 
-    <style>
-
-        .circle-slider .rs-handle {
-            background-color: transparent;
-            border: 8px solid transparent;
-            border-right-color: black;
-            margin: -8px 0 0 14px !important;
-        }
-
-        .circle-slider .rs-handle:before {
-            display: block;
-            content: " ";
-            position: absolute;
-            height: 12px;
-            width: 12px;
-            background: black;
-            right: -6px;
-            bottom: -6px;
-            border-radius: 100%;
-        }
-
-        .circle-slider .rs-handle:after {
-            display: block;
-            content: " ";
-            width: 106px;
-            position: absolute;
-            top: -1px;
-            right: 0px;
-            border-top: 2px dotted black;
-        }
-
-        .circle-slider .rs-range-color {
-            background:  #ddc5f0;
-        }
-
-        .circle-slider .rs-path-color {
-            background-color: #ddc5f0;
-        }
-    </style>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         $(".circle-slider").roundSlider({
+
+
           sliderType: "min-range",
-          radius: 130,
+          radius: 430,
           showTooltip: false,
           width: 16,
           value: 75,
           handleSize: 0,
-          handleShape: "square",
+          
           circleShape: "half-top",
           startAngle: 50,
           endAngle: "+50",
@@ -73,6 +37,14 @@
     </script>
 </head>
 <body>
+<div class="button-control">
+        <button id="rightforward">Framåt höger</button>
+        <button id="leftforward">Framåt vänster</button>
+        <button id="forward">Framåt</button>
+        <button id="backward">Bakåt</button>
+        <button id="stop">Stopp</button>
+
+</div>
 <div class="circle-slider"></div>
 </body>
 </html>

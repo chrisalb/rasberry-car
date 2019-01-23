@@ -1,3 +1,4 @@
+import threading
 from .mDev import *
 
 def runner(**data):
@@ -9,60 +10,112 @@ def runner(**data):
     mdev.writeReg(mdev.CMD_DIR1,int(direction))
     mdev.writeReg(mdev.CMD_DIR2,int(direction))
     mdev.writeReg(mdev.CMD_PWM1,int(speed))
-    mdev.writeReg(mdev.CMD_PWM2,int(speed))        	        
-    
-    return speed
-    
-def camera(**data):
-    for i in range(300, 1200, 2000):
-        camera_left_right = i
-        time.sleep(0.03)
+    mdev.writeReg(mdev.CMD_PWM2,int(speed)) 
 
+    return ''
+
+def camera(**data):
     camera_up_down = data['camera_up_down']
-    # mdev.writeReg(mdev.CMD_SERVO2,int(camera_left_right))
-    mdev.writeReg(mdev.CMD_SERVO3,int(camera_up_down))
+    camera_left_right = data['camera_left_right']
+    mdev.writeReg(mdev.CMD_SERVO2,int(camera_left_right))
+    mdev.writeReg(mdev.CMD_SERVO3, int(camera_up_down))
     return 'ok'
         
+def checkdistance():
+    while True:
+        SonicEchoTime = mdev.readReg(mdev.CMD_SONIC)
+        distance = SonicEchoTime * 17.0 / 1000.0
+        if (int(distance) < 40 and int(distance) > 0):
+            stop()
+            buzz()
+            mdev.writeReg(mdev.CMD_IO1,0)
+            mdev.writeReg(mdev.CMD_IO2,1)
+            mdev.writeReg(mdev.CMD_IO3,1)
+            time.sleep(1)
+            mdev.writeReg(mdev.CMD_IO1,1)
+            mdev.writeReg(mdev.CMD_IO2,1)
+            mdev.writeReg(mdev.CMD_IO3,1)
+
+
 def forward():
-    speed = 900
+    speed = 1100
     mdev.writeReg(mdev.CMD_DIR1,0)
     mdev.writeReg(mdev.CMD_DIR2,0)
     mdev.writeReg(mdev.CMD_PWM1,speed)
-    mdev.writeReg(mdev.CMD_PWM2,speed)        	        
+    mdev.writeReg(mdev.CMD_PWM2,speed)
+    mdev.writeReg(mdev.CMD_SERVO1, 1480)
+    mdev.writeReg(mdev.CMD_SERVO2, 1500)
+    mdev.writeReg(mdev.CMD_SERVO3, 1500)
+
+    return '' 
 
 def rightforward():
-    speed = 900
-    mdev.writeReg(mdev.CMD_SERVO1,300)
+    speed = 1000
+    mdev.writeReg(mdev.CMD_SERVO1,1150)
     mdev.writeReg(mdev.CMD_DIR1,0)
     mdev.writeReg(mdev.CMD_DIR2,0)
     mdev.writeReg(mdev.CMD_PWM1,speed)
     mdev.writeReg(mdev.CMD_PWM2,speed)
-    	        
+    SonicEchoTime = mdev.readReg(mdev.CMD_SONIC)
+    distance = SonicEchoTime * 17.0 / 1000.0
+
+        
+    return ''
 
 def leftforward():
-    speed = 900
-    mdev.writeReg(mdev.CMD_SERVO1,1800)
+    speed = 1000
+    mdev.writeReg(mdev.CMD_SERVO1,1950)
     mdev.writeReg(mdev.CMD_DIR1,0)
     mdev.writeReg(mdev.CMD_DIR2,0)
     mdev.writeReg(mdev.CMD_PWM1,speed)
     mdev.writeReg(mdev.CMD_PWM2,speed)
+    SonicEchoTime = mdev.readReg(mdev.CMD_SONIC)
+    distance = SonicEchoTime * 17.0 / 1000.0
+
+    return ''  
+
     	        
 
 def backward():
-    speed = 900
+    speed = 1000
     mdev.writeReg(mdev.CMD_DIR1,1)
     mdev.writeReg(mdev.CMD_DIR2,1)
+    mdev.writeReg(mdev.CMD_SERVO1,1460)
     mdev.writeReg(mdev.CMD_PWM1,speed)
-    mdev.writeReg(mdev.CMD_PWM2,speed)     
-
+    mdev.writeReg(mdev.CMD_PWM2,speed)
+    
 def stop():
         mdev.writeReg(mdev.CMD_IO1,1)
         mdev.writeReg(mdev.CMD_IO2,1)
         mdev.writeReg(mdev.CMD_IO3,1)
-        mdev.writeReg(mdev.CMD_SERVO1,1500)
+        mdev.writeReg(mdev.CMD_SERVO1,1480)
         mdev.writeReg(mdev.CMD_PWM1,0)
-        mdev.writeReg(mdev.CMD_PWM2, 0)    
+        mdev.writeReg(mdev.CMD_PWM2, 0)
+        mdev.writeReg(mdev.CMD_BUZZER, 0)
 
+        return ''
+
+def buzz():
+        mdev.writeReg(mdev.CMD_BUZZER,250)
+
+def blink():
+    for i in range(0,3):
+        mdev.writeReg(mdev.CMD_IO1,0)
+        mdev.writeReg(mdev.CMD_IO2,1)
+        mdev.writeReg(mdev.CMD_IO3,1)
+        time.sleep(0.3)
+        mdev.writeReg(mdev.CMD_IO1,1)
+        mdev.writeReg(mdev.CMD_IO2,0)
+        mdev.writeReg(mdev.CMD_IO3,1)
+        time.sleep(0.3)
+        mdev.writeReg(mdev.CMD_IO1,1)
+        mdev.writeReg(mdev.CMD_IO2,1)
+        mdev.writeReg(mdev.CMD_IO3,0)
+        time.sleep(0.3)
+        mdev.writeReg(mdev.CMD_IO1,1)
+        mdev.writeReg(mdev.CMD_IO2,1)
+        mdev.writeReg(mdev.CMD_IO3,1) 
+""" 
 def drive(self):
     try:		
             mdev.writeReg(mdev.CMD_DIR1,0)
@@ -114,20 +167,12 @@ def drive(self):
         mdev.writeReg(mdev.CMD_PWM1,0)
         mdev.writeReg(mdev.CMD_PWM2, 0)
     pass
-def blink():
-    for i in range(0,3):
-        mdev.writeReg(mdev.CMD_IO1,0)
-        mdev.writeReg(mdev.CMD_IO2,1)
-        mdev.writeReg(mdev.CMD_IO3,1)
-        time.sleep(0.3)
-        mdev.writeReg(mdev.CMD_IO1,1)
-        mdev.writeReg(mdev.CMD_IO2,0)
-        mdev.writeReg(mdev.CMD_IO3,1)
-        time.sleep(0.3)
-        mdev.writeReg(mdev.CMD_IO1,1)
-        mdev.writeReg(mdev.CMD_IO2,1)
-        mdev.writeReg(mdev.CMD_IO3,0)
-        time.sleep(0.3)
-        mdev.writeReg(mdev.CMD_IO1,1)
-        mdev.writeReg(mdev.CMD_IO2,1)
-        mdev.writeReg(mdev.CMD_IO3,1)
+
+
+
+mdev.writeReg(mdev.CMD_SERVO2, int(camera_left_right)) < 700 höger  - 2000 rakt fram - 3000 till vänster
+mdev.writeReg(mdev.CMD_SERVO3, int(camera_up_down)) < 1500 rakt fram - 3000 rakt upp - 1300 längst ned
+
+"""
+
+
