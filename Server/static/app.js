@@ -17,61 +17,44 @@ carController.prototype = {
         this.listenEvents();
     },
 
-    initSlider: function () {
-        var self = this;
-        $(".circle-slider").roundSlider({
-            sliderType: "min-range",
-            radius: 430,
-            showTooltip: false,
-            width: 16,
-            value: 75,
-            handleSize: 0,
-            circleShape: "half-top",
-            startAngle: 50,
-            endAngle: "+50",
-            value: 50,
 
-            create: function (v) {
 
-            },
-            drag: function (v) {
-                self.data.command = 'run';
-                self.data.direction = 0;
-                self.data.speed = 400;
-                self.data.turning_angle = v.value * 30;
-                self.send();
-            },
-            stop: function (v) {
-                self.data.command = 'stop';
-                self.send();
-                this.value = 50;
-                this.startAngle = 50
-            }
-        });
-
-    },
     listenEvents: function () {
         var self = this;
 
-        var forwardBtn = document.getElementById('forward');
-        forwardBtn.addEventListener('mousedown', function (ev) {
-            self.data.command = 'forward';
-            self.send();
-        });
-        forwardBtn.addEventListener('mouseup', function (ev) {
-            self.data.command = 'stop';
-            self.send();
-        });
-
-        forwardBtn.addEventListener('touchstart', function (ev) {
+        $('#forward').on('vmousedown mousedown', function (ev) {
             self.data.command = 'forward';
             self.send();
         });
 
-        forwardBtn.addEventListener('touchend', function (ev) {
+        $('#forward').on('vmouseup mouseup', function (ev) {
             self.data.command = 'stop';
             self.send();
         });
+
+
+
+
+
+        /*         var forwardBtn = document.getElementById('forward');
+                forwardBtn.addEventListener('mousedown', function (ev) {
+                    self.data.command = 'forward';
+                    self.send();
+                });
+                forwardBtn.addEventListener('mouseup', function (ev) {
+                    self.data.command = 'stop';
+                    self.send();
+                });
+
+                forwardBtn.addEventListener('touchstart', function (ev) {
+                    self.data.command = 'forward';
+                    self.send();
+                });
+
+                forwardBtn.addEventListener('touchend', function (ev) {
+                    self.data.command = 'stop';
+                    self.send();
+                }); */
 
         var backwardBtn = document.getElementById('backward');
         backwardBtn.addEventListener('mousedown', function (ev) {
@@ -133,6 +116,38 @@ carController.prototype = {
             self.data.command = 'stop';
             self.send();
         });
+
+        var camUpBtn = document.getElementById('camera_up');
+        /*         var stop = false;
+                camUpBtn.addEventListener('mouseup', function (ev) {
+                    console.log('stop')
+                    stop = true;
+                });
+         */
+        /*         function move(pos) {
+                    return setInterval(function () {
+                        self.data.command = 'camera_up';
+                        console.log(pos);
+                        pos++;
+                    }, 2000);
+                }
+
+                $('#camera_up').on('mousedown mouseup', function (ev) {
+                    var interval = 0;
+                    var pos = 1500;
+
+                    if (ev.type == 'mousedown') {
+                        interval = move(pos);
+                    }
+
+                    if (ev.type == 'mouseup') {
+                        clearInterval(interval)
+                    }
+                    console.log(ev.type);
+                });
+                $('#camera_up').on('mouseup', function () {
+
+                }); */
 
 
 

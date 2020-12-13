@@ -30,14 +30,22 @@ def command():
         }
     
     
-    if (command == 'camera'):
+    if (command == 'camera_up'):
         camera_data = {
-        'camera_up_down': request.args.get('camera_up_down'),
-        'camera_left_right': request.args.get('camera_left_right'),
+        'camera_up': request.args.get('camera_up')
+        }
 
-        }    
         resp = camera(**camera_data)
         return resp
+
+        
+    
+    if (command == 'camera_down'):
+        camera_data = {
+        'camera_up': request.args.get('camera_down')
+        }
+
+
 
     if (command == 'run'):
         resp = runner(**data)
